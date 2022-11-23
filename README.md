@@ -11,6 +11,8 @@ This project has a dependency to [Emik.Morsels](https://github.com/Emik03/Emik.M
 - [Installation](#installation)
 - [Configuration](#configuration)
 - [Example](#example)
+- [Contribute](#contribute)
+- [License](#license)
 
 ---
 
@@ -107,3 +109,11 @@ class InternalWithAttribute
     class NestedPrivateWithAttribute { }
 }
 ```
+
+## Contribute
+
+Issues and pull requests are welcome to help this repository be the best it can be.
+
+## License
+
+This repository falls under the [MPL-2 license](https://www.mozilla.org/en-US/MPL/2.0/).
