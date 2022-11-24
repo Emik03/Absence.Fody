@@ -5,7 +5,7 @@
     </PropertyGroup>
     <ItemGroup>
         <WeaverFiles Remove="$(Absence)Absence.Fody.dll" />
-        <Compile Remove="$(SharedPath)Emik.Morsels/*.cs" />
+        <Compile Remove="$(SharedPath)Emik.Morsels/Source/*.cs" />
         <Content Remove="$(AssemblyName).ExternalAnnotations.xml" />
     </ItemGroup>
     <ItemGroup>
