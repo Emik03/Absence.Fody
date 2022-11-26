@@ -85,7 +85,7 @@ sealed partial class Walkies : IReadOnlyCollection<object>
     static bool AnyPublic(params object?[] members) =>
         members.Any(x => x is IList list ? list.Cast<object>().Any(IsPublic) : IsPublic(x));
 
-    static bool AnyImplicit(IMonoProvider i) => i.CustomAttributes.Any(IsImplicit);
+    static bool AnyImplicit(IMonoProvider i) => i.CustomAttributes?.Any(IsImplicit) ?? false;
 
     static bool IsImplicit(ICustomAttribute i) =>
         i.AttributeType?.FullName is Generated or MeansImplicitUse or UsedImplicitly;
