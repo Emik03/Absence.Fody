@@ -53,7 +53,7 @@ sealed partial class Walkies : IReadOnlyCollection<object>
     /// <returns>Itself.</returns>
     internal Walkies Display(Action<string> logger)
     {
-        _except.Select(x => $"Configured to keep \"{x}\".").ToList().ForEach(logger);
+        _except.For(x => logger($"Configured to keep \"{x}\"."));
         _logger = logger;
 
         return this;

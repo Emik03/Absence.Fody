@@ -25,21 +25,18 @@ public sealed class ModuleWeaver : BaseModuleWeaver
         if (asm is null || modules is null)
             return;
 
-        var except =
-            Config
-               .Attributes(Except)
-               .SelectMany(x => x.Value.Split())
-               .Select(x => x.Trim())
-               .ToArray();
+        var except = Config
+           .Attributes(Except)
+           .SelectMany(x => x.Value.Split())
+           .Select(x => x.Trim())
+           .ToArray();
 
         var walked = new Walkies(except).Display(WriteInfo).Walk(asm);
-        var types = modules.Select(x => x.Types);
 
-        types
+        modules
+           .Select(x => x.Types)
            .SelectMany(walked.Mutate)
-           .Select(x => $"Begone, {x}!")
-           .ToList()
-           .ForEach(WriteInfo);
+           .For(x => WriteInfo($"Begone, {x}!"));
     }
 
     /// <inheritdoc />
