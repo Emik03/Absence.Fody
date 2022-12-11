@@ -103,7 +103,9 @@ sealed partial class Walkies : IReadOnlyCollection<object>
                 Main or
                 Module or
                 Program or
-                [.., 'P', 'r', 'o', 'c', 'e', 's', 's', 'e', 'd', 'B', 'y', 'F', 'o', 'd', 'y'],
+                [
+                    .., 'P', 'r', 'o', 'c', 'e', 's', 's', 'e', 'd', 'B', 'y', 'F', 'o', 'd', 'y',
+                ],
             } => true,
             EventDefinition e => AnyPublic(e.AddMethod, e.InvokeMethod, e.OtherMethods, e.RemoveMethod),
             FieldDefinition f => f.IsPublic,

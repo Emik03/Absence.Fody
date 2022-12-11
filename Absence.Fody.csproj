@@ -3,7 +3,4 @@
         <TargetFramework>netstandard2.0</TargetFramework>
         <Description>Removes unused private/internal types during compile-time.</Description>
     </PropertyGroup>
-    <ItemGroup>
-        <PackageReference Include="FodyHelpers" Version="6.6.4" />
-    </ItemGroup>
 </Project>
