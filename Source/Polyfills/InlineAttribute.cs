@@ -9,6 +9,12 @@
 // ReSharper disable once CheckNamespace
 namespace InlineMethod;
 
+#region
+
+using static AttributeTargets;
+
+#endregion
+
 /// <summary>Method to inline.</summary>
 [AttributeUsage(Method)]
 sealed class InlineAttribute : Attribute

@@ -8,6 +8,12 @@
 
 namespace Absence.Fody;
 
+#region
+
+using static Enumerable;
+
+#endregion
+
 /// <summary>Provides an iteration of members that come from tokens.</summary>
 sealed partial class Walkies
 {

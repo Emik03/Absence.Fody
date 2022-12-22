@@ -8,6 +8,14 @@
 
 namespace Absence.Fody;
 
+#region
+
+using static Enumerable;
+using static String;
+using static StringComparer;
+
+#endregion
+
 /// <summary>Provides an iteration of members that come from tokens.</summary>
 sealed partial class Walkies : IReadOnlyCollection<object>
 {

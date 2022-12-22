@@ -8,6 +8,12 @@
 
 namespace Absence.Fody;
 
+#region
+
+using static Enumerable;
+
+#endregion
+
 /// <summary>This weaver removes unused members within an assembly.</summary>
 [CLSCompliant(false)]
 public sealed class ModuleWeaver : BaseModuleWeaver
