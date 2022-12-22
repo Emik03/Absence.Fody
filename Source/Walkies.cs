@@ -1,11 +1,12 @@
+#region Emik.MPL
+
 // <copyright file="Walkies.cs" company="Emik">
 // Copyright (c) Emik. This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0. If a copy of the MPL was not distributed with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
 // </copyright>
-namespace Absence.Fody;
 
-using static Enumerable;
-using static String;
-using static StringComparer;
+#endregion
+
+namespace Absence.Fody;
 
 /// <summary>Provides an iteration of members that come from tokens.</summary>
 sealed partial class Walkies : IReadOnlyCollection<object>
@@ -31,7 +32,7 @@ sealed partial class Walkies : IReadOnlyCollection<object>
     [UsedImplicitly]
     Action<string> _logger = _ => { };
 
-    /// <summary>Initializes a new instance of the <see cref="Walkies"/> class.</summary>
+    /// <summary>Initializes a new instance of the <see cref="Walkies" /> class.</summary>
     /// <param name="except">The list of types to exempt from filtering.</param>
     internal Walkies(IEnumerable<string>? except = null) =>
         _except = new(except?.SplitBy(IsNullOrWhiteSpace)[false] ?? Empty<string>(), Ordinal);
@@ -40,13 +41,13 @@ sealed partial class Walkies : IReadOnlyCollection<object>
     public int Count => _hash.Count;
 
     /// <inheritdoc />
-    public override string ToString() => Join(Between, _hash);
-
-    /// <inheritdoc />
     public IEnumerator<object> GetEnumerator() => _hash.GetEnumerator();
 
     /// <inheritdoc />
     IEnumerator IEnumerable.GetEnumerator() => _hash.GetEnumerator();
+
+    /// <inheritdoc />
+    public override string ToString() => Join(Between, _hash);
 
     /// <summary>Invokes a method that displays the current state of the object.</summary>
     /// <param name="logger">The delegate to invoke.</param>

@@ -1,6 +1,11 @@
+#region Emik.MPL
+
 // <copyright file="Walkies.Walk.cs" company="Emik">
 // Copyright (c) Emik. This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0. If a copy of the MPL was not distributed with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
 // </copyright>
+
+#endregion
+
 namespace Absence.Fody;
 
 /// <summary>Provides an iteration of members that come from tokens.</summary>
@@ -36,7 +41,7 @@ sealed partial class Walkies
             _ => this,
         };
 
-    /// <inheritdoc cref="Walk(Mono.Cecil.AssemblyDefinition?)"/>
+    /// <inheritdoc cref="Walk(Mono.Cecil.AssemblyDefinition?)" />
     internal Walkies Walk(IMethodSignature? x)
     {
         if (x is MethodReference y)
@@ -51,10 +56,10 @@ sealed partial class Walkies
         return this;
     }
 
-    /// <inheritdoc cref="Walk(Mono.Cecil.AssemblyDefinition?)"/>
+    /// <inheritdoc cref="Walk(Mono.Cecil.AssemblyDefinition?)" />
     internal Walkies Walk(CustomAttributeArgument x) => Has(x) ? this : Walk(x.Type);
 
-    /// <inheritdoc cref="Walk(Mono.Cecil.AssemblyDefinition?)"/>
+    /// <inheritdoc cref="Walk(Mono.Cecil.AssemblyDefinition?)" />
     internal Walkies Walk(MonoNamedArgument x) => Has(x) ? this : Walk(x.Argument);
 
     /// <summary>Steps through a definition, caching all items found along the way.</summary>
@@ -73,7 +78,7 @@ sealed partial class Walkies
         return this;
     }
 
-    /// <inheritdoc cref="Walk(Mono.Cecil.AssemblyDefinition?)"/>
+    /// <inheritdoc cref="Walk(Mono.Cecil.AssemblyDefinition?)" />
     internal Walkies Walk(ConstantDebugInformation? x)
     {
         if (Has(x))
@@ -83,7 +88,7 @@ sealed partial class Walkies
         return Match(x.Value);
     }
 
-    /// <inheritdoc cref="Walk(Mono.Cecil.AssemblyDefinition?)"/>
+    /// <inheritdoc cref="Walk(Mono.Cecil.AssemblyDefinition?)" />
     internal Walkies Walk(CustomAttribute? x)
     {
         if (Has(x))
@@ -97,7 +102,7 @@ sealed partial class Walkies
         return this;
     }
 
-    /// <inheritdoc cref="Walk(Mono.Cecil.AssemblyDefinition?)"/>
+    /// <inheritdoc cref="Walk(Mono.Cecil.AssemblyDefinition?)" />
     internal Walkies Walk(EventDefinition? x)
     {
         if (Has(x))
@@ -113,7 +118,7 @@ sealed partial class Walkies
         return this;
     }
 
-    /// <inheritdoc cref="Walk(Mono.Cecil.AssemblyDefinition?)"/>
+    /// <inheritdoc cref="Walk(Mono.Cecil.AssemblyDefinition?)" />
     internal Walkies Walk(ExceptionHandler? x)
     {
         if (Has(x))
@@ -128,7 +133,7 @@ sealed partial class Walkies
         return this;
     }
 
-    /// <inheritdoc cref="Walk(Mono.Cecil.AssemblyDefinition?)"/>
+    /// <inheritdoc cref="Walk(Mono.Cecil.AssemblyDefinition?)" />
     internal Walkies Walk(FieldDefinition? x)
     {
         if (Has(x))
@@ -142,7 +147,7 @@ sealed partial class Walkies
         return this;
     }
 
-    /// <inheritdoc cref="Walk(Mono.Cecil.AssemblyDefinition?)"/>
+    /// <inheritdoc cref="Walk(Mono.Cecil.AssemblyDefinition?)" />
     internal Walkies Walk(InterfaceImplementation? x)
     {
         if (Has(x))
@@ -153,7 +158,7 @@ sealed partial class Walkies
         return this;
     }
 
-    /// <inheritdoc cref="Walk(Mono.Cecil.AssemblyDefinition?)"/>
+    /// <inheritdoc cref="Walk(Mono.Cecil.AssemblyDefinition?)" />
     internal Walkies Walk(ImportDebugInformation? x)
     {
         if (Has(x))
@@ -164,10 +169,10 @@ sealed partial class Walkies
         return this;
     }
 
-    /// <inheritdoc cref="Walk(Mono.Cecil.AssemblyDefinition?)"/>
+    /// <inheritdoc cref="Walk(Mono.Cecil.AssemblyDefinition?)" />
     internal Walkies Walk(ImportTarget? x) => Has(x) ? this : Walk(x.Type);
 
-    /// <inheritdoc cref="Walk(Mono.Cecil.AssemblyDefinition?)"/>
+    /// <inheritdoc cref="Walk(Mono.Cecil.AssemblyDefinition?)" />
     internal Walkies Walk(Instruction? x)
     {
         if (Has(x))
@@ -179,7 +184,7 @@ sealed partial class Walkies
         return this;
     }
 
-    /// <inheritdoc cref="Walk(Mono.Cecil.AssemblyDefinition?)"/>
+    /// <inheritdoc cref="Walk(Mono.Cecil.AssemblyDefinition?)" />
     internal Walkies Walk(MemberReference? x) =>
         x switch
         {
@@ -192,7 +197,7 @@ sealed partial class Walkies
             _ => Walk(x.DeclaringType),
         };
 
-    /// <inheritdoc cref="Walk(Mono.Cecil.AssemblyDefinition?)"/>
+    /// <inheritdoc cref="Walk(Mono.Cecil.AssemblyDefinition?)" />
     internal Walkies Walk(MethodDebugInformation? x)
     {
         if (Has(x))
@@ -205,7 +210,7 @@ sealed partial class Walkies
         return this;
     }
 
-    /// <inheritdoc cref="Walk(Mono.Cecil.AssemblyDefinition?)"/>
+    /// <inheritdoc cref="Walk(Mono.Cecil.AssemblyDefinition?)" />
     internal Walkies Walk(MethodDefinition? x)
     {
         if (Has(x))
@@ -225,7 +230,7 @@ sealed partial class Walkies
         return this;
     }
 
-    /// <inheritdoc cref="Walk(Mono.Cecil.AssemblyDefinition?)"/>
+    /// <inheritdoc cref="Walk(Mono.Cecil.AssemblyDefinition?)" />
     internal Walkies Walk(MethodReference? x)
     {
         if (x is MethodDefinition y)
@@ -243,7 +248,7 @@ sealed partial class Walkies
         return this;
     }
 
-    /// <inheritdoc cref="Walk(Mono.Cecil.AssemblyDefinition?)"/>
+    /// <inheritdoc cref="Walk(Mono.Cecil.AssemblyDefinition?)" />
     internal Walkies Walk(ModuleReference? x)
     {
         if (x is ModuleDefinition y)
@@ -253,7 +258,7 @@ sealed partial class Walkies
         return this;
     }
 
-    /// <inheritdoc cref="Walk(Mono.Cecil.AssemblyDefinition?)"/>
+    /// <inheritdoc cref="Walk(Mono.Cecil.AssemblyDefinition?)" />
     internal Walkies Walk(MethodReturnType? x)
     {
         if (Has(x))
@@ -266,7 +271,7 @@ sealed partial class Walkies
         return this;
     }
 
-    /// <inheritdoc cref="Walk(Mono.Cecil.AssemblyDefinition?)"/>
+    /// <inheritdoc cref="Walk(Mono.Cecil.AssemblyDefinition?)" />
     internal Walkies Walk(ModuleDefinition? x)
     {
         if (Has(x))
@@ -285,7 +290,7 @@ sealed partial class Walkies
         return this;
     }
 
-    /// <inheritdoc cref="Walk(Mono.Cecil.AssemblyDefinition?)"/>
+    /// <inheritdoc cref="Walk(Mono.Cecil.AssemblyDefinition?)" />
     internal Walkies Walk(MonoMethodBody? x)
     {
         if (Has(x))
@@ -299,7 +304,7 @@ sealed partial class Walkies
         return this;
     }
 
-    /// <inheritdoc cref="Walk(Mono.Cecil.AssemblyDefinition?)"/>
+    /// <inheritdoc cref="Walk(Mono.Cecil.AssemblyDefinition?)" />
     internal Walkies Walk(MonoSecurity? x)
     {
         if (Has(x))
@@ -311,7 +316,7 @@ sealed partial class Walkies
         return this;
     }
 
-    /// <inheritdoc cref="Walk(Mono.Cecil.AssemblyDefinition?)"/>
+    /// <inheritdoc cref="Walk(Mono.Cecil.AssemblyDefinition?)" />
     internal Walkies Walk(SecurityDeclaration? x)
     {
         if (Has(x))
@@ -321,7 +326,7 @@ sealed partial class Walkies
         return this;
     }
 
-    /// <inheritdoc cref="Walk(Mono.Cecil.AssemblyDefinition?)"/>
+    /// <inheritdoc cref="Walk(Mono.Cecil.AssemblyDefinition?)" />
     internal Walkies Walk(TypeReference? x)
     {
         switch (x)
@@ -337,7 +342,7 @@ sealed partial class Walkies
         return this;
     }
 
-    /// <inheritdoc cref="Walk(Mono.Cecil.AssemblyDefinition?)"/>
+    /// <inheritdoc cref="Walk(Mono.Cecil.AssemblyDefinition?)" />
     internal Walkies Walk(TypeDefinition? x)
     {
         if (Has(x))
@@ -358,7 +363,7 @@ sealed partial class Walkies
         return this;
     }
 
-    /// <inheritdoc cref="Walk(Mono.Cecil.AssemblyDefinition?)"/>
+    /// <inheritdoc cref="Walk(Mono.Cecil.AssemblyDefinition?)" />
     internal Walkies Walk(TypeSpecification? x)
     {
         if (Has(x))
@@ -372,7 +377,7 @@ sealed partial class Walkies
         return this;
     }
 
-    /// <inheritdoc cref="Walk(Mono.Cecil.AssemblyDefinition?)"/>
+    /// <inheritdoc cref="Walk(Mono.Cecil.AssemblyDefinition?)" />
     internal Walkies Walk(PropertyDefinition? x)
     {
         if (Has(x))
@@ -390,7 +395,7 @@ sealed partial class Walkies
         return this;
     }
 
-    /// <inheritdoc cref="Walk(Mono.Cecil.AssemblyDefinition?)"/>
+    /// <inheritdoc cref="Walk(Mono.Cecil.AssemblyDefinition?)" />
     internal Walkies Walk(ParameterDefinition? x)
     {
         if (Has(x))
@@ -403,7 +408,7 @@ sealed partial class Walkies
         return this;
     }
 
-    /// <inheritdoc cref="Walk(Mono.Cecil.AssemblyDefinition?)"/>
+    /// <inheritdoc cref="Walk(Mono.Cecil.AssemblyDefinition?)" />
     internal Walkies Walk(ScopeDebugInformation? x)
     {
         if (Has(x))
@@ -415,6 +420,6 @@ sealed partial class Walkies
         return this;
     }
 
-    /// <inheritdoc cref="Walk(Mono.Cecil.AssemblyDefinition?)"/>
+    /// <inheritdoc cref="Walk(Mono.Cecil.AssemblyDefinition?)" />
     internal Walkies Walk(VariableDefinition? x) => Has(x) ? this : Walk(x.VariableType);
 }
