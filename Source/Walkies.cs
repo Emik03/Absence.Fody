@@ -111,11 +111,9 @@ sealed partial class Walkies : IReadOnlyCollection<object>
                 IsExternalInit or
                 Main or
                 Module or
-                Program or
-                [
-                    .., 'P', 'r', 'o', 'c', 'e', 's', 's', 'e', 'd', 'B', 'y', 'F', 'o', 'd', 'y',
-                ],
+                Program,
             } => true,
+            MemberReference m when m.FullName.EndsWith("ProcessedByFody") => true,
             EventDefinition e => AnyPublic(e.AddMethod, e.InvokeMethod, e.OtherMethods, e.RemoveMethod),
             FieldDefinition f => f.IsPublic,
             MethodDefinition m => m.IsPublic || m.IsConstructor || m != m.GetBaseMethod(),
