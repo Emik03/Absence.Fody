@@ -30,7 +30,6 @@ This project has a dependency to [Emik.Morsels](https://github.com/Emik03/Emik.M
 - If you already have a `FodyWeavers.xml` file in the root directory of your project, add the `<Absence />` tag there. This file will be created on the first build if it doesn't exist:
 
 ```xml
-
 <Weavers>
     <Absence />
 </Weavers>
@@ -43,7 +42,6 @@ See [Fody usage](https://github.com/Fody/Home/blob/master/pages/usage.md) for ge
 You can add an `Except` attribute to exclude namespaces or types separated by any amount of whitespace:
 
 ```xml
-
 <Weavers>
     <Absence Exclude="Foo DoNotExcludeMe
                       Do.Not.Exclude.Me" />
