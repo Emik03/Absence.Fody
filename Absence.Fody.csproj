@@ -1,6 +1,8 @@
 <Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
         <TargetFramework>netstandard2.0</TargetFramework>
+        <RepositoryUrl>https://github.com/Emik03/Absence.Fody</RepositoryUrl>
         <Description>Removes unused private/internal types during compile-time.</Description>
+        <PackageTags>Cecil DeadCode Elimination Fody ILWeaving TreeShake Unused</PackageTags>
     </PropertyGroup>
 </Project>
