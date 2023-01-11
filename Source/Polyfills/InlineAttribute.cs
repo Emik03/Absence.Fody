@@ -6,6 +6,7 @@
 
 #endregion
 
+#if !NET20
 // ReSharper disable once CheckNamespace
 namespace InlineMethod;
 
@@ -26,3 +27,4 @@ sealed class InlineAttribute : Attribute
     /// <summary>Gets a value indicating whether to remove the method after inlining, if private.</summary>
     public bool Remove { get; }
 }
+#endif

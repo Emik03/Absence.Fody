@@ -6,6 +6,7 @@
 
 #endregion
 
+#if !NET20
 namespace Absence.Fody;
 
 #region
@@ -429,3 +430,4 @@ sealed partial class Walkies
     /// <inheritdoc cref="Walk(Mono.Cecil.AssemblyDefinition?)" />
     internal Walkies Walk(VariableDefinition? x) => Has(x) ? this : Walk(x.VariableType);
 }
+#endif

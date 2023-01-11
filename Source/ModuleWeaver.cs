@@ -6,6 +6,7 @@
 
 #endregion
 
+#if !NET20
 namespace Absence.Fody;
 
 #region
@@ -51,3 +52,4 @@ public sealed class ModuleWeaver : BaseModuleWeaver
     /// <inheritdoc />
     public override IEnumerable<string> GetAssembliesForScanning() => Empty<string>();
 }
+#endif

@@ -6,6 +6,7 @@
 
 #endregion
 
+#if !NET20
 namespace Absence.Fody;
 
 #region
@@ -128,3 +129,4 @@ sealed partial class Walkies : IReadOnlyCollection<object>
 
     bool Has([NotNullWhen(false)] object? x) => x is null || !_hash.Add(x);
 }
+#endif
