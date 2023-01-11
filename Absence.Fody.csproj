@@ -5,4 +5,7 @@
         <Description>Removes unused private/internal types during compile-time.</Description>
         <PackageTags>Cecil DeadCode Elimination Fody ILWeaving TreeShake Unused</PackageTags>
     </PropertyGroup>
+    <ItemGroup>
+        <PackageReference Remove="Absence.Fody" />
+    </ItemGroup>
 </Project>
