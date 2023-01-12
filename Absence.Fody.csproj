@@ -8,7 +8,6 @@
     </PropertyGroup>
     <ItemGroup>
         <PackageReference Remove="Absence.Fody" />
-        <PackageReference Remove="Divorce.Fody" />
-        <!-- <WeaverFiles Include="$(SharedPath)Absence.Fody/bin/netstandard2.0/Absence.Fody.dll" /> -->
+        <WeaverFiles Include="$(OutDir)$(AssemblyName).dll" />
     </ItemGroup>
 </Project>
