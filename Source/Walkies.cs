@@ -30,6 +30,7 @@ sealed partial class Walkies : IReadOnlyCollection<object>
         Module = "<Module>",
         ImplicitMain = "Program.<Main>$",
         IsExternalInit = "System.Runtime.CompilerServices.IsExternalInit",
+        ProcessedByFody = nameof(ProcessedByFody),
         Program = nameof(Program),
         UsedImplicitly = "JetBrains.Annotations.UsedImplicitlyAttribute";
 
@@ -114,7 +115,7 @@ sealed partial class Walkies : IReadOnlyCollection<object>
                 Module or
                 Program,
             } => true,
-            MemberReference m when m.FullName.EndsWith("ProcessedByFody") => true,
+            MemberReference m when m.FullName.EndsWith(ProcessedByFody) => true,
             EventDefinition e => AnyPublic(e.AddMethod, e.InvokeMethod, e.OtherMethods, e.RemoveMethod),
             FieldDefinition f => f.IsPublic,
             MethodDefinition m => m.IsPublic || m.IsConstructor || m != m.GetBaseMethod(),
