@@ -1,7 +1,7 @@
 # Absence.Fody
 
 [![NuGet package](https://img.shields.io/nuget/v/Absence.Fody.svg?logo=NuGet)](https://www.nuget.org/packages/Absence.Fody)
-[![License](https://img.shields.io/github/license/Emik03/Absence.Fody.svg?style=flat)](https://github.com/Emik03/Absence.Fody/blob/main/LICENSE.md)
+[![License](https://img.shields.io/github/license/Emik03/Absence.Fody.svg?style=flat)](https://github.com/Emik03/Absence.Fody/blob/main/LICENSE)
 
 This is an add-in for [Fody](https://github.com/Fody/Fody) which lets you trim unused private/internal types during compile-time.
 
