@@ -1,13 +1,12 @@
 <Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
-        <FileVersion>1.0.1</FileVersion>
+        <FileVersion>1.0.2</FileVersion>
         <TargetFrameworks>netstandard2.0;net20</TargetFrameworks>
         <RepositoryUrl>https://github.com/Emik03/Absence.Fody</RepositoryUrl>
         <Description>Removes unused private/internal types during compile-time.</Description>
         <PackageTags>Cecil DeadCode Elimination Fody ILWeaving TreeShake Unused</PackageTags>
     </PropertyGroup>
     <ItemGroup>
-        <PackageReference Remove="Absence.Fody" />
-        <WeaverFiles Include="$(OutDir)$(AssemblyName).dll" />
+        <WeaverFiles Include="bin/netstandard2.0/$(AssemblyName).dll" />
     </ItemGroup>
 </Project>
