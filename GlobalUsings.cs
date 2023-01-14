@@ -6,7 +6,7 @@
 
 #endregion
 
-#if !NET20
+#if NETSTANDARD2_0 || NET6_0 // ReSharper disable RedundantBlankLines
 
 #region
 

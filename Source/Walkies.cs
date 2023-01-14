@@ -6,7 +6,7 @@
 
 #endregion
 
-#if !NET20
+#if NETSTANDARD2_0
 namespace Absence.Fody;
 
 #region
