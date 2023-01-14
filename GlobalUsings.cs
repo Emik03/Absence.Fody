@@ -7,6 +7,7 @@
 #endregion
 
 #if !NET20
+
 #region
 
 global using Fody;
@@ -19,4 +20,5 @@ global using MonoNamedArgument = Mono.Cecil.CustomAttributeNamedArgument;
 global using MonoSecurity = Mono.Cecil.SecurityAttribute;
 
 #endregion
+
 #endif
