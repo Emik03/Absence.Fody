@@ -1,6 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
-        <FileVersion>1.0.3.2</FileVersion>
+        <FileVersion>1.0.4</FileVersion>
         <RepositoryUrl>https://github.com/Emik03/Absence.Fody</RepositoryUrl>
         <TargetFrameworks>netstandard2.0;netstandard1.0;net20</TargetFrameworks>
         <Description>Removes unused private/internal types during compile-time.</Description>
