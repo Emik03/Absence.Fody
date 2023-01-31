@@ -1,5 +1,4 @@
 // SPDX-License-Identifier: MPL-2.0
-#if NETSTANDARD2_0
 namespace Absence.Fody;
 
 using static Enumerable;
@@ -119,4 +118,3 @@ sealed partial class Walkies : IReadOnlyCollection<object>
 
     bool Has([NotNullWhen(false)] object? x) => x is null || !_hash.Add(x);
 }
-#endif

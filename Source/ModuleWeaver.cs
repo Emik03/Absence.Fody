@@ -30,12 +30,7 @@ public sealed class ModuleWeaver : BaseModuleWeaver
            .Select(x => x.Trim())
            .ToArray();
 
-        var walked = new Walkies(except).Display(WriteInfo).Walk(asm);
-
-        modules
-           .Select(x => x.Types)
-           .SelectMany(walked.Mutate)
-           .For(x => WriteInfo($"Begone, {x}!"));
+        Walkies.Trim(asm, except, WriteInfo);
     }
 
     /// <inheritdoc />

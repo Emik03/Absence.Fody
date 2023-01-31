@@ -1,5 +1,4 @@
 // SPDX-License-Identifier: MPL-2.0
-#if NETSTANDARD2_0
 namespace Absence.Fody;
 
 using static Enumerable;
@@ -419,4 +418,3 @@ sealed partial class Walkies
     /// <inheritdoc cref="Walk(Mono.Cecil.AssemblyDefinition?)" />
     internal Walkies Walk(VariableDefinition? x) => Has(x) ? this : Walk(x.VariableType);
 }
-#endif
