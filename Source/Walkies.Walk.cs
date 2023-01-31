@@ -348,13 +348,13 @@ sealed partial class Walkies
         Walk(x.DeclaringType);
         Walk(x.Module);
         x.CustomAttributes?.Select(Walk).Enumerate();
-        x.Events?.Select(Walk).Enumerate();
-        x.Fields?.Select(Walk).Enumerate();
         x.GenericParameters?.Select(Walk).Enumerate();
         x.Interfaces?.Select(Walk).Enumerate();
-        x.Methods?.Select(Walk).Enumerate();
         x.SecurityDeclarations?.Select(Walk).Enumerate();
-        x.Properties?.Select(Walk).Enumerate();
+        x.Events?.Where(IsPublic).Select(Walk).Enumerate();
+        x.Fields?.Where(IsPublic).Select(Walk).Enumerate();
+        x.Methods?.Where(IsPublic).Select(Walk).Enumerate();
+        x.Properties?.Where(IsPublic).Select(Walk).Enumerate();
         x.NestedTypes?.Where(IsPublic).Select(Walk).Enumerate();
         return this;
     }

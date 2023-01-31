@@ -46,7 +46,7 @@ sealed partial class Walkies : IReadOnlyCollection<object>
     IEnumerator IEnumerable.GetEnumerator() => _hash.GetEnumerator();
 
     /// <inheritdoc />
-    public override string ToString() => Join(Between, _hash);
+    public override string ToString() => _hash.Stringify();
 
     /// <summary>Invokes a method that displays the current state of the object.</summary>
     /// <param name="logger">The delegate to invoke.</param>
@@ -79,18 +79,33 @@ sealed partial class Walkies : IReadOnlyCollection<object>
         var nestedUnused = used.Select(x => x.NestedTypes).SelectMany(Mutate);
         unused.Select(mutate.Remove).Enumerate();
 
-        return unused.Concat(nestedUnused);
+        var unusedMembers = used.SelectMany(Mutate).SelectMany(x => x);
+
+        return unused.Concat(nestedUnused).Concat(unusedMembers);
+    }
+
+    void DeleteMePlease() { }
+
+    /// <summary>Mutates the argument by removing items not listed in the current set.</summary>
+    /// <param name="mutate">The collection to mutate by filtering.</param>
+    /// <returns>A new iteration of items that have been removed.</returns>
+    internal IEnumerable<IEnumerable<MemberReference>> Mutate(TypeDefinition mutate)
+    {
+        yield return Mutate(mutate.Events);
+        yield return Mutate(mutate.Fields);
+        yield return Mutate(mutate.Methods);
+        yield return Mutate(mutate.Properties);
     }
 
     static bool AnyPublic(params object?[] members) =>
-        members.Any(x => x is IList list ? list.Cast<object>().Any(IsPublic) : IsPublic(x));
+        members.Any(x => x is IList<object?> list ? list.Any(IsPublic) : IsPublic(x));
 
     static bool AnyImplicit(IMonoProvider i) => i.CustomAttributes?.Any(IsImplicit) ?? false;
 
     static bool IsImplicit(ICustomAttribute i) =>
         i.AttributeType?.FullName is Generated or MeansImplicitUse or UsedImplicitly;
 
-    static bool IsPublic(object? member) =>
+    static bool IsPublic([NotNullWhen(true)] object? member) =>
         member switch
         {
             IMonoProvider p when AnyImplicit(p) => true,
@@ -114,9 +129,30 @@ sealed partial class Walkies : IReadOnlyCollection<object>
             _ => true,
         };
 
-    bool AnyEqual(TypeDefinition obj) =>
-        _hash.Contains(obj) || new[] { obj.FullName, obj.Name, obj.Namespace }.Any(_except.Contains);
+    bool AnyEqual([NotNullWhen(false)] MemberReference? obj) =>
+        obj is null ||
+        IsPublic(obj) ||
+        _except.Contains(obj.FullName) ||
+        _except.Contains(obj.Name) ||
+        _hash.Contains(obj) ||
+        _hash.OfType<MemberReference>().Any(x => x.Name == obj.Name) ||
+        obj.DeclaringType?.Namespace is { } name && _except.Contains(name) ||
+        obj switch
+        {
+            EventDefinition e => AnyEqual(e.AddMethod, e.InvokeMethod, e.OtherMethods, e.RemoveMethod),
+            PropertyDefinition p => AnyEqual(p.GetMethod, p.OtherMethods, p.SetMethod),
+            TypeReference t => _except.Contains(t.Namespace),
+            _ => false,
+        };
 
-    bool Has([NotNullWhen(false)] object? x) => x is null || !_hash.Add(x);
+    bool AnyEqual(params object?[] objs) =>
+        objs.Any(x => x is IEnumerable<MemberReference?> more ? more.Any(AnyEqual) : AnyEqual(x as MemberReference));
+
+    bool Has([NotNullWhen(false)] object? x) =>
+        x is null || !_hash.Add(x) || x is Instruction y && !_hash.Add(y.Operand);
+
+    IEnumerable<T> Mutate<T>(ICollection<T> mutate)
+        where T : MemberReference =>
+        mutate.SplitBy(AnyEqual)[false].For(x => mutate.Remove(x));
 }
 #endif
