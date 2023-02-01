@@ -30,7 +30,7 @@ public sealed class ModuleWeaver : BaseModuleWeaver
            .Select(x => x.Trim())
            .ToArray();
 
-        Walkies.Trim(asm, except, WriteInfo);
+        asm.Trim(WriteInfo, except);
     }
 
     /// <inheritdoc />
