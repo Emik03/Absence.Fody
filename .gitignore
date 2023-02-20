@@ -397,7 +397,6 @@ FodyWeavers.xsd
 
 # JetBrains Rider
 *.sln.iml
-.idea/
 
 # Emik.Morsels symlinks
 /Directory.Build.local.props
