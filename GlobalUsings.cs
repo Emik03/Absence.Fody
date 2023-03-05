@@ -1,7 +1,21 @@
 // SPDX-License-Identifier: MPL-2.0
-global using Absence.Fody;
+global using AssemblyDefinition = Mono.Cecil.AssemblyDefinition;
+global using CustomAttribute = Mono.Cecil.CustomAttribute;
+global using EventDefinition = Mono.Cecil.EventDefinition;
 global using ExceptionHandler = Mono.Cecil.Cil.ExceptionHandler;
+global using FieldDefinition = Mono.Cecil.FieldDefinition;
+global using GenericParameter = Mono.Cecil.GenericParameter;
 global using IMonoProvider = Mono.Cecil.ICustomAttributeProvider;
+global using InterfaceImplementation = Mono.Cecil.InterfaceImplementation;
+global using MemberReference = Mono.Cecil.MemberReference;
+global using MethodDebugInformation = Mono.Cecil.Cil.MethodDebugInformation;
+global using MethodDefinition = Mono.Cecil.MethodDefinition;
+global using ModuleDefinition = Mono.Cecil.ModuleDefinition;
+global using ModuleReference = Mono.Cecil.ModuleReference;
 global using MonoMethodBody = Mono.Cecil.Cil.MethodBody;
 global using MonoNamedArgument = Mono.Cecil.CustomAttributeNamedArgument;
 global using MonoSecurity = Mono.Cecil.SecurityAttribute;
+global using PropertyDefinition = Mono.Cecil.PropertyDefinition;
+global using TypeDefinition = Mono.Cecil.TypeDefinition;
+global using TypeReference = Mono.Cecil.TypeReference;
+global using TypeSpecification = Mono.Cecil.TypeSpecification;
