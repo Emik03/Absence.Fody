@@ -1,7 +1,7 @@
 # Absence.Fody
 
-[![NuGet package](https://img.shields.io/nuget/v/Absence.Fody.svg?logo=NuGet)](https://www.nuget.org/packages/Absence.Fody)
-[![License](https://img.shields.io/github/license/Emik03/Absence.Fody.svg?style=flat)](https://github.com/Emik03/Absence.Fody/blob/main/LICENSE)
+[![NuGet package](https://img.shields.io/nuget/v/Absence.Fody.svg?color=50fa7b&logo=NuGet&style=for-the-badge)](https://www.nuget.org/packages/Absence.Fody)
+[![License](https://img.shields.io/github/license/Emik03/Absence.Fody.svg?color=6272a4&style=for-the-badge)](https://github.com/Emik03/Absence.Fody/blob/main/LICENSE)
 
 This is an add-in for [Fody](https://github.com/Fody/Fody) which lets you trim unused private/internal types during compile-time.
 
@@ -44,8 +44,8 @@ You can add an `Except` attribute to exclude namespaces or types separated by an
 
 ```xml
 <Weavers>
-    <Absence Exclude="Foo DoNotExcludeMe
-                      Do.Not.Exclude.Me" />
+    <Absence Except="Foo DoNotExcludeMe
+                     Do.Not.Exclude.Me" />
 </Weavers>
 ```
 

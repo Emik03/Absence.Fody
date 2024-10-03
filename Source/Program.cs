@@ -1,15 +1,18 @@
 ﻿// SPDX-License-Identifier: MPL-2.0
-#if !NETSTANDARD2_0 // ReSharper disable WrongIndentSize
-var standardOutput = Func(Console.ReadLine)
+#if !NETSTANDARD2_0
+var readLine = Console.ReadLine;
+
+var readLineUntilNullOrWhitespace = readLine
    .Forever()
    .Select(Invoke)
    .TakeUntil(string.IsNullOrWhiteSpace);
 
 args
-   .DefaultIfEmpty(standardOutput)
+   .DefaultIfEmpty(readLineUntilNullOrWhitespace)
    .Where(File.Exists)
    .Select(AssemblyDefinition.ReadAssembly)
    .Filter()
    .Select(x => x.Trim(Console.WriteLine))
-   .For(x => x.Write($"Absence.{x.MainModule?.Name}"));
+   .Lazily(x => x.Write($"Absence.{x.MainModule?.Name}"))
+   .Enumerate();
 #endif

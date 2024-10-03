@@ -1,8 +1,6 @@
 // SPDX-License-Identifier: MPL-2.0
 namespace Absence.Fody;
 
-using static Enumerable;
-
 /// <summary>Provides an iteration of members that come from tokens.</summary>
 sealed partial class Walkies
 {

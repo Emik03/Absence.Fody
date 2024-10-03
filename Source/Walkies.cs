@@ -1,10 +1,6 @@
 // SPDX-License-Identifier: MPL-2.0
 namespace Absence.Fody;
 
-using static Enumerable;
-using static String;
-using static StringComparer;
-
 /// <summary>Provides an iteration of members that come from tokens.</summary>
 sealed partial class Walkies : IReadOnlyCollection<object>
 {
@@ -25,15 +21,15 @@ sealed partial class Walkies : IReadOnlyCollection<object>
     readonly HashSet<string> _except;
 
     [ProvidesContext]
-    readonly HashSet<object> _hash = new();
+    readonly HashSet<object> _hash = [];
 
     [UsedImplicitly]
-    Action<string> _logger = _ => { };
+    Action<string> _logger = Noop;
 
     /// <summary>Initializes a new instance of the <see cref="Walkies" /> class.</summary>
     /// <param name="except">The list of types to exempt from filtering.</param>
     internal Walkies(IEnumerable<string>? except = null) =>
-        _except = new(except?.SplitBy(IsNullOrWhiteSpace)[false] ?? Empty<string>(), Ordinal);
+        _except = new(except?.SplitBy(string.IsNullOrWhiteSpace).Falsy ?? [], StringComparer.Ordinal);
 
     /// <inheritdoc />
     public int Count => _hash.Count;
@@ -45,7 +41,7 @@ sealed partial class Walkies : IReadOnlyCollection<object>
     IEnumerator IEnumerable.GetEnumerator() => _hash.GetEnumerator();
 
     /// <inheritdoc />
-    public override string ToString() => Join(Between, _hash);
+    public override string ToString() => _hash.Conjoin(Between);
 
     /// <summary>Invokes a method that displays the current state of the object.</summary>
     /// <param name="logger">The delegate to invoke.</param>

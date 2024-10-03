@@ -2,8 +2,6 @@
 #if NETSTANDARD2_0
 namespace Absence.Fody;
 
-using static Enumerable;
-
 /// <summary>This weaver removes unused members within an assembly.</summary>
 [CLSCompliant(false)]
 public sealed class ModuleWeaver : BaseModuleWeaver
@@ -16,7 +14,8 @@ public sealed class ModuleWeaver : BaseModuleWeaver
     /// <inheritdoc />
     public override void Execute()
     {
-        WriteInfo(typeof(ModuleWeaver).Namespace);
+        // ReSharper disable once NullableWarningSuppressionIsUsed
+        WriteInfo(typeof(ModuleWeaver).Namespace!);
 
         var asm = ModuleDefinition.Assembly;
         var modules = asm?.Modules;
@@ -34,6 +33,6 @@ public sealed class ModuleWeaver : BaseModuleWeaver
     }
 
     /// <inheritdoc />
-    public override IEnumerable<string> GetAssembliesForScanning() => Empty<string>();
+    public override IEnumerable<string> GetAssembliesForScanning() => [];
 }
 #endif
