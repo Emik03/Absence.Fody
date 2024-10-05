@@ -8,7 +8,7 @@ static string Join(IMemberDefinition x) =>
 static void Dump(Walkies tree)
 #if DEBUG
    =>
-      tree.Select(Join).Conjoin('\n').Peek(Console.WriteLine);
+      tree.Select(Join).Lazily(x => Console.WriteLine($"Preserving {x}.")).Enumerate();
 #else
 { }
 #endif
@@ -19,7 +19,7 @@ args
    .Where(File.Exists)
    .Select(AssemblyDefinition.ReadAssembly)
    .Filter()
-   .Lazily(x => new Walkies { x }.Peek(Dump).Trim(x, OnTrim))
+   .Lazily(x => new Walkies { x }.Peek(Dump).Trim(x, [], OnTrim))
    .Lazily(x => x.Write($"Absence.{x.MainModule?.Name}"))
    .Enumerate();
 #endif

@@ -4,12 +4,11 @@ namespace Absence.Fody;
 /// <summary>Provides the method for trimming an assembly.</summary>
 sealed class Walkies : IEqualityComparer<IMemberDefinition>, ICollection<IMemberDefinition>
 {
+    [ProvidesContext]
+    readonly HashSet<IMemberDefinition> _used;
 #if DEBUG
     readonly Stopwatch _timer = Stopwatch.StartNew();
 #endif
-    [ProvidesContext]
-    readonly HashSet<IMemberDefinition> _used;
-
     public Walkies() => _used = new(comparer: this);
 
     /// <inheritdoc />
@@ -152,14 +151,15 @@ sealed class Walkies : IEqualityComparer<IMemberDefinition>, ICollection<IMember
     /// Trims the assembly off of types, events, methods, and properties not included in this collection.
     /// </summary>
     /// <param name="item">The assembly to trim.</param>
+    /// <param name="except">The names of types, events, methods, and properties to exclude.</param>
     /// <param name="onTrim">The action to invoke on each trimmed item.</param>
-    public void Trim(AssemblyDefinition? item, Action<IMemberDefinition> onTrim)
+    public void Trim(AssemblyDefinition? item, ICollection<Regex> except, Action<IMemberDefinition> onTrim)
 #if DEBUG
     {
 #else
         =>
 #endif // ReSharper disable once BadPreprocessorIndent
-        item?.Modules?.Lazily(x => Trim(x, onTrim)).Enumerate();
+        item?.Modules?.Lazily(x => Trim(x, except, onTrim)).Enumerate();
 #if DEBUG
         _timer.Elapsed.ToConciseString().Debug();
         _timer.Stop();
@@ -169,8 +169,9 @@ sealed class Walkies : IEqualityComparer<IMemberDefinition>, ICollection<IMember
     /// Trims the module off of types, events, methods, and properties not included in this collection.
     /// </summary>
     /// <param name="item">The module to trim.</param>
+    /// <param name="except">The names of types, events, methods, and properties to exclude.</param>
     /// <param name="onTrim">The action to invoke on each trimmed item.</param>
-    public void Trim(ModuleDefinition? item, Action<IMemberDefinition> onTrim)
+    public void Trim(ModuleDefinition? item, ICollection<Regex> except, Action<IMemberDefinition> onTrim)
     {
         void Trims<T>(ICollection<T?>? collection)
             where T : IMemberDefinition
@@ -178,6 +179,17 @@ sealed class Walkies : IEqualityComparer<IMemberDefinition>, ICollection<IMember
             void Process(T? next)
             {
                 if (next is null)
+                    return;
+
+                var name = next.Name.OrEmpty();
+
+                for (var i = next.DeclaringType; i is not null; i = i.DeclaringType)
+                    name = $"{i.Name}.{name}";
+
+                if (next.DeclaringType is { DeclaringType.Namespace: var space })
+                    name = $"{space}.{name}";
+
+                if (except.Any(x => x.IsMatch(name)))
                     return;
 
                 if (!Contains(next))
