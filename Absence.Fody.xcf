@@ -2,7 +2,7 @@
 <xs:complexType xmlns:xs="http://www.w3.org/2001/XMLSchema">
     <xs:attribute name="Except" type="xs:string">
         <xs:annotation>
-            <xs:documentation>The list of namespaces or types to always include in the binary. Cannot be partially qualified; must be fully- or not at all. Separate by any amount of whitespace, including line breaks.</xs:documentation>
+            <xs:documentation>The list of namespaces or types to always exclude from potential trimming. In the form of regex strings, separated by any amount of whitespace.</xs:documentation>
         </xs:annotation>
     </xs:attribute>
 </xs:complexType>
