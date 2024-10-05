@@ -308,8 +308,10 @@ sealed class Walkies : IEqualityComparer<IMemberDefinition>, ICollection<IMember
 
     [Pure]
     static bool IsPublic([NotNullWhen(true)] MethodDefinition? item) =>
-        item is { IsAbstract: true } or { IsNewSlot: true } or { IsPublic: true } or
-            { IsConstructor: true, IsStatic: true } or { IsVirtual: true } or { Overrides.Count: > 0 } ||
+        item is { IsAbstract: true } or { IsNewSlot: true } or { IsPublic: true } or { IsVirtual: true } or
+            { Overrides.Count: > 0 } ||
+        item is { IsConstructor: true } &&
+        (item is { IsStatic: true } || item.DeclaringType?.Methods?.Count(x => x.IsConstructor) is 1) ||
         IsPublic((IMemberDefinition?)item);
 
     [Pure]

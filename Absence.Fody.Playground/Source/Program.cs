@@ -8,7 +8,7 @@ public class Good1 // ReSharper disable ClassNeverInstantiated.Local UnusedMembe
 {
     public class Good2
     {
-        public static void Good3<T>() { }
+        public static void Good3<[UsedImplicitly] T>() { }
 
         [UsedImplicitly]
         static void Good4<T>() { }
