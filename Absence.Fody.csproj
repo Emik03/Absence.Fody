@@ -4,6 +4,7 @@
         <NoTests>true</NoTests>
         <FileVersion>2.0</FileVersion>
         <NoWarn>$(NoWarn);SCA0006</NoWarn>
+        <CopyrightSince>2022</CopyrightSince>
         <RepositoryUrl>https://github.com/Emik03/Absence.Fody</RepositoryUrl>
         <Description>Removes unused private/internal types during compile-time.</Description>
         <PackageTags>Cecil Code Dead DeadCode Dependency Eliminate Elimination Events Fody IL ILWeaving Methods Minifier Minify Mono Nested Properties Purge Remove Shake Strip Tinifier Tinify TreeShake Tree Trim Types Unused Weaving</PackageTags>
