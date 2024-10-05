@@ -40,16 +40,14 @@ See [Fody usage](https://github.com/Fody/Home/blob/master/pages/usage.md) for ge
 
 ## Configuration
 
-You can add an `Except` attribute to exclude namespaces or types separated by any amount of whitespace:
+You can add an `Except` attribute with regex strings to exclude namespaces, types, or members, separated by any amount of whitespace:
 
 ```xml
 <Weavers>
-    <Absence Except="Foo DoNotExcludeMe
-                     Do.Not.Exclude.Me" />
+    <Absence Except="DoNotTrimMe Do.Not.Trim.Me
+                     DoNotTrimGenericsEither`1" />
 </Weavers>
 ```
-
-Types may either be fully qualified, or not at all. Partially qualified names are not supported due to potential ambiguity.
 
 ## Example
 
