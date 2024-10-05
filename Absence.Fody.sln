@@ -1,0 +1,22 @@
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Absence.Fody", "Absence.Fody.csproj", "{F481D2AA-28F1-4BA0-A3C2-324E1D3970D3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Absence.Fody.Playground", "Absence.Fody.Playground\Absence.Fody.Playground.csproj", "{360E7740-FA89-4FD7-825B-513B883562C1}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{F481D2AA-28F1-4BA0-A3C2-324E1D3970D3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F481D2AA-28F1-4BA0-A3C2-324E1D3970D3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F481D2AA-28F1-4BA0-A3C2-324E1D3970D3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F481D2AA-28F1-4BA0-A3C2-324E1D3970D3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{360E7740-FA89-4FD7-825B-513B883562C1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{360E7740-FA89-4FD7-825B-513B883562C1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{360E7740-FA89-4FD7-825B-513B883562C1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{360E7740-FA89-4FD7-825B-513B883562C1}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
+

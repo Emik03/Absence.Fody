@@ -6,31 +6,12 @@ namespace Absence.Fody;
 [CLSCompliant(false)]
 public sealed class ModuleWeaver : BaseModuleWeaver
 {
-    const string Except = nameof(Except);
-
     /// <inheritdoc />
     public override bool ShouldCleanReference => false;
 
     /// <inheritdoc />
-    public override void Execute()
-    {
-        // ReSharper disable once NullableWarningSuppressionIsUsed
-        WriteInfo(typeof(ModuleWeaver).Namespace!);
-
-        var asm = ModuleDefinition.Assembly;
-        var modules = asm?.Modules;
-
-        if (asm is null || modules is null)
-            return;
-
-        var except = Config
-           .Attributes(Except)
-           .SelectMany(x => x.Value.Split())
-           .Select(x => x.Trim())
-           .ToArray();
-
-        asm.Trim(WriteInfo, except);
-    }
+    public override void Execute() =>
+        new Walkies { ModuleDefinition.Assembly }.Trim(ModuleDefinition, x => WriteInfo($"Begone, {x}!"));
 
     /// <inheritdoc />
     public override IEnumerable<string> GetAssembliesForScanning() => [];
