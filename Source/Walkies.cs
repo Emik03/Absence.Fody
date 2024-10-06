@@ -282,6 +282,15 @@ sealed class Walkies : IEqualityComparer<IMemberDefinition>, ICollection<IMember
     [Pure]
     public IEnumerator<IMemberDefinition> GetEnumerator() => _used.GetEnumerator();
 
+    /// <inheritdoc cref="List{T}.ForEach"/>
+    public Walkies ForEach(Action<IMemberDefinition> action)
+    {
+        foreach (var member in this)
+            action(member);
+
+        return this;
+    }
+
     [Pure]
     static bool IsImplicitlyUse([NotNullWhen(true)] CustomAttribute? x) =>
         x is { AttributeType.FullName: { } name } &&

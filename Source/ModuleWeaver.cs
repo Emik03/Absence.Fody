@@ -6,8 +6,6 @@ namespace Absence.Fody;
 [CLSCompliant(false)]
 public sealed class ModuleWeaver : BaseModuleWeaver
 {
-    const string Except = nameof(Except);
-
     /// <inheritdoc />
     public override bool ShouldCleanReference => false;
 
@@ -24,15 +22,15 @@ public sealed class ModuleWeaver : BaseModuleWeaver
         }
 
         var list = Config
-           .Attributes(Except)
+           .Attributes("Except")
            .SelectMany(x => x.Value.SplitWhitespace())
            .Select(ToRegex)
            .Filter()
            .ToIList();
 
-        var walkies = new Walkies { ModuleDefinition.Assembly };
-        walkies.For(x => WriteDebug($"Preserving {x}."));
-        walkies.Trim(ModuleDefinition, list, x => WriteInfo($"Begone, {x}!"));
+        new Walkies { ModuleDefinition.Assembly }
+           .ForEach(x => WriteDebug($"Preserving {x}."))
+           .Trim(ModuleDefinition.Assembly, list, x => WriteInfo($"Begone, {x}!"));
     }
 
     /// <inheritdoc />
