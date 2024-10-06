@@ -263,10 +263,13 @@ sealed class Walkies : IEqualityComparer<IMemberDefinition>, ICollection<IMember
     [Pure]
     int IEqualityComparer<IMemberDefinition>.GetHashCode(IMemberDefinition? obj)
     {
-        var hash = 0;
+        int hash = Prime();
 
         for (; obj is not null; obj = obj.DeclaringType)
-            hash = HashCode.Combine(obj.GetType(), obj.Name, hash);
+        {
+            hash ^= unchecked(obj.GetType().GetHashCode() * Prime());
+            hash ^= unchecked(StringComparer.Ordinal.GetHashCode(obj.Name) * Prime());
+        }
 
         return hash;
     }

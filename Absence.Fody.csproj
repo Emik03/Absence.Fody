@@ -2,7 +2,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
         <NoTests>true</NoTests>
-        <FileVersion>2.0</FileVersion>
+        <FileVersion>2.0.1</FileVersion>
         <NoWarn>$(NoWarn);SCA0006</NoWarn>
         <CopyrightSince>2022</CopyrightSince>
         <RepositoryUrl>https://github.com/Emik03/Absence.Fody</RepositoryUrl>
