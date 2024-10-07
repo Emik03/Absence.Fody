@@ -288,8 +288,8 @@ sealed class Walkies : IEqualityComparer<IMemberDefinition>,
     }
 
     /// <inheritdoc />
-    int IEqualityComparer<ParameterDefinition?>.GetHashCode(ParameterDefinition obj) =>
-        StringComparer.Ordinal.GetHashCode(obj.ParameterType?.Name ?? "");
+    int IEqualityComparer<ParameterDefinition?>.GetHashCode(ParameterDefinition? obj) =>
+        StringComparer.Ordinal.GetHashCode(obj?.ParameterType?.Name ?? "");
 
     /// <inheritdoc />
     [Pure]
