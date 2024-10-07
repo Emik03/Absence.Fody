@@ -2,7 +2,9 @@
 namespace Absence.Fody;
 
 /// <summary>Provides the method for trimming an assembly.</summary>
-sealed class Walkies : IEqualityComparer<IMemberDefinition>, ICollection<IMemberDefinition>
+sealed class Walkies : IEqualityComparer<IMemberDefinition>,
+    IEqualityComparer<ParameterDefinition?>,
+    ICollection<IMemberDefinition>
 {
     [ProvidesContext]
     readonly HashSet<IMemberDefinition> _used;
@@ -35,9 +37,9 @@ sealed class Walkies : IEqualityComparer<IMemberDefinition>, ICollection<IMember
 
         Add(type);
 
-        if (type is { Properties: { } typeProperties } && item is { Properties: { } properties })
-            typeProperties
-               .CartesianProduct(properties)
+        if (type is { Properties: { } typeProps } && item is { Properties: { } props })
+            typeProps
+               .CartesianProduct(props)
                .Where(x => x.First?.Name == x.Second.Name)
                .Select(First)
                .Lazily(Add)
@@ -215,11 +217,15 @@ sealed class Walkies : IEqualityComparer<IMemberDefinition>, ICollection<IMember
     /// <inheritdoc />
     bool IEqualityComparer<IMemberDefinition>.Equals(IMemberDefinition? x, IMemberDefinition? y)
     {
-        static bool MethodsEqual(MethodReference? x, MethodReference? y) =>
-            x?.Parameters?.Count != y?.Parameters?.Count && x?.GenericParameters?.Count != y?.GenericParameters?.Count;
+        bool MethodsEqual(MethodReference? x, MethodReference? y) =>
+            x is null
+                ? y is null
+                : y is not null &&
+                x.GenericParameters?.Count == y.GenericParameters?.Count &&
+                x.Parameters.OrEmpty().SequenceEqual(y.Parameters.OrEmpty(), this);
 
-        static bool PropertiesEqual(PropertyReference? x, PropertyReference? y) =>
-            x?.Parameters?.Count != y?.Parameters?.Count;
+        bool PropertiesEqual(PropertyReference? x, PropertyReference? y) =>
+            x is null ? y is null : y is not null && x.Parameters.OrEmpty().SequenceEqual(y.Parameters.OrEmpty(), this);
 
         static bool TypesEqual(TypeDefinition? x, TypeDefinition? y, bool recurse)
         {
@@ -240,6 +246,13 @@ sealed class Walkies : IEqualityComparer<IMemberDefinition>, ICollection<IMember
             MethodsEqual(x as MethodDefinition, y as MethodDefinition) &&
             PropertiesEqual(x as PropertyDefinition, y as PropertyDefinition);
     }
+
+    /// <inheritdoc />
+    bool IEqualityComparer<ParameterDefinition?>.Equals(ParameterDefinition? x, ParameterDefinition? y) =>
+        x?.ParameterType?.Name == y?.ParameterType?.Name ||
+        x?.ParameterType is GenericParameter { Position: var px } &&
+        y?.ParameterType is GenericParameter { Position: var py } &&
+        px == py;
 
     /// <inheritdoc />
     [Pure]
@@ -273,6 +286,10 @@ sealed class Walkies : IEqualityComparer<IMemberDefinition>, ICollection<IMember
 
         return hash;
     }
+
+    /// <inheritdoc />
+    int IEqualityComparer<ParameterDefinition?>.GetHashCode(ParameterDefinition obj) =>
+        StringComparer.Ordinal.GetHashCode(obj.ParameterType?.Name ?? "");
 
     /// <inheritdoc />
     [Pure]
@@ -345,34 +362,6 @@ sealed class Walkies : IEqualityComparer<IMemberDefinition>, ICollection<IMember
         } ||
         IsPublic((IMemberDefinition?)item);
 
-    [MustUseReturnValue]
-    static IMemberDefinition? Resolve(MemberReference? item)
-    {
-        static bool MethodsEqual(MethodReference x, MethodReference y) =>
-            x.Name == y.Name && x.Parameters?.Count == y.Parameters?.Count;
-
-        static bool PropertiesEqual(PropertyReference x, PropertyReference y) =>
-            x.Name == y.Name && x.Parameters?.Count == y.Parameters?.Count;
-
-        static TypeDefinition? Resolving(MemberReference? item) =>
-            item?.DeclaringType is { } declaring ?
-                Resolving(declaring) is var resolved && item is TypeReference inner
-                    ? resolved?.NestedTypes?.FirstOrDefault(x => x.Name == inner.Name)
-                    : resolved :
-                item is TypeReference outer ? item.Module?.Types?.FirstOrDefault(x => x.Name == outer.Name) : null;
-
-        return item is not IMemberDefinition definition && Resolving(item) is var ret
-            ? item switch
-            {
-                EventReference vent => ret?.Events?.FirstOrDefault(x => x.Name == vent.Name),
-                FieldReference field => ret?.Fields?.FirstOrDefault(x => x.Name == field.Name),
-                MethodReference method => ret?.Methods?.FirstOrDefault(x => MethodsEqual(x, method)),
-                PropertyReference property => ret?.Properties?.FirstOrDefault(x => PropertiesEqual(x, property)),
-                _ => ret,
-            }
-            : definition;
-    }
-
     void AddDirectly(IMemberDefinition? item)
     {
         while (item is not null && _used.Add(item) && item.CustomAttributes.OrEmpty().For(Add) is var _)
@@ -408,5 +397,36 @@ sealed class Walkies : IEqualityComparer<IMemberDefinition>, ICollection<IMember
                     continue;
                 default: return;
             }
+    }
+
+    [MustUseReturnValue]
+    IMemberDefinition? Resolve(MemberReference? item)
+    {
+        bool MethodsEqual(MethodReference x, MethodReference y) =>
+            x.Name == y.Name && SequencesEqual(x.Parameters, y.Parameters);
+
+        bool PropertiesEqual(PropertyReference x, PropertyReference y) =>
+            x.Name == y.Name && SequencesEqual(x.Parameters, y.Parameters);
+
+        bool SequencesEqual(IEnumerable<ParameterDefinition?>? x, IEnumerable<ParameterDefinition?>? y) =>
+            x.OrEmpty().SequenceEqual(y.OrEmpty(), this);
+
+        static TypeDefinition? Resolving(MemberReference? item) =>
+            item?.DeclaringType is { } declaring ?
+                Resolving(declaring) is var resolved && item is TypeReference inner
+                    ? resolved?.NestedTypes?.FirstOrDefault(x => x.Name == inner.Name)
+                    : resolved :
+                item is TypeReference outer ? item.Module?.Types?.FirstOrDefault(x => x.Name == outer.Name) : null;
+
+        return item is not IMemberDefinition definition && Resolving(item) is var ret
+            ? item switch
+            {
+                EventReference vent => ret?.Events.OrEmpty().FirstOrDefault(x => x.Name == vent.Name),
+                FieldReference field => ret?.Fields.OrEmpty().FirstOrDefault(x => x.Name == field.Name),
+                MethodReference method => ret?.Methods.OrEmpty().FirstOrDefault(x => MethodsEqual(x, method)),
+                PropertyReference props => ret?.Properties.OrEmpty().FirstOrDefault(x => PropertiesEqual(x, props)),
+                _ => ret,
+            }
+            : definition;
     }
 }
