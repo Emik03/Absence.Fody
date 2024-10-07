@@ -364,6 +364,9 @@ sealed class Walkies : IEqualityComparer<IMemberDefinition>,
 
     void AddDirectly(IMemberDefinition? item)
     {
+        if (item is { DeclaringType: { } declaring })
+            AddDirectly(declaring);
+
         while (item is not null && _used.Add(item) && item.CustomAttributes.OrEmpty().For(Add) is var _)
             switch (item)
             {
