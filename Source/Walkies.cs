@@ -221,9 +221,9 @@ sealed class Walkies : IEqualityComparer<IMemberDefinition>, ICollection<IMember
         static bool PropertiesEqual(PropertyReference? x, PropertyReference? y) =>
             x?.Parameters?.Count != y?.Parameters?.Count;
 
-        static bool TypesEqual(TypeDefinition? x, TypeDefinition? y)
+        static bool TypesEqual(TypeDefinition? x, TypeDefinition? y, bool recurse)
         {
-            for (; x is not null && y is not null; x = x.DeclaringType, y = y.DeclaringType)
+            for (; x is not null && y is not null; x = recurse ? x.DeclaringType : null, y = y.DeclaringType)
                 if (x.Name != y.Name ||
                     x.Namespace != y.Namespace ||
                     x.GenericParameters?.Count != y.GenericParameters?.Count)
@@ -235,8 +235,8 @@ sealed class Walkies : IEqualityComparer<IMemberDefinition>, ICollection<IMember
         return x == y ||
             x?.Name == y?.Name &&
             x?.GetType() == y?.GetType() &&
-            TypesEqual(x as TypeDefinition, y as TypeDefinition) &&
-            TypesEqual(x?.DeclaringType, y?.DeclaringType) &&
+            TypesEqual(x?.DeclaringType, y?.DeclaringType, true) &&
+            TypesEqual(x as TypeDefinition, y as TypeDefinition, false) &&
             MethodsEqual(x as MethodDefinition, y as MethodDefinition) &&
             PropertiesEqual(x as PropertyDefinition, y as PropertyDefinition);
     }
@@ -268,7 +268,7 @@ sealed class Walkies : IEqualityComparer<IMemberDefinition>, ICollection<IMember
         for (; obj is not null; obj = obj.DeclaringType)
         {
             hash ^= unchecked(obj.GetType().GetHashCode() * Prime());
-            hash ^= unchecked(StringComparer.Ordinal.GetHashCode(obj.Name) * Prime());
+            hash ^= unchecked(StringComparer.Ordinal.GetHashCode(obj.Name.OrEmpty()) * Prime());
         }
 
         return hash;
@@ -349,22 +349,17 @@ sealed class Walkies : IEqualityComparer<IMemberDefinition>, ICollection<IMember
     static IMemberDefinition? Resolve(MemberReference? item)
     {
         static bool MethodsEqual(MethodReference x, MethodReference y) =>
-            x.Name == y.Name &&
-            x.Parameters?.Count == y.Parameters?.Count &&
-            x.GenericParameters?.Count == y.GenericParameters?.Count;
+            x.Name == y.Name && x.Parameters?.Count == y.Parameters?.Count;
 
         static bool PropertiesEqual(PropertyReference x, PropertyReference y) =>
             x.Name == y.Name && x.Parameters?.Count == y.Parameters?.Count;
 
-        static bool TypesEqual(TypeReference x, TypeReference y) =>
-            x.Name == y.Name && x.GenericParameters?.Count == y.GenericParameters?.Count;
-
         static TypeDefinition? Resolving(MemberReference? item) =>
             item?.DeclaringType is { } declaring ?
                 Resolving(declaring) is var resolved && item is TypeReference inner
-                    ? resolved?.NestedTypes?.FirstOrDefault(x => TypesEqual(x, inner))
+                    ? resolved?.NestedTypes?.FirstOrDefault(x => x.Name == inner.Name)
                     : resolved :
-                item is TypeReference outer ? item.Module?.Types?.FirstOrDefault(x => TypesEqual(x, outer)) : null;
+                item is TypeReference outer ? item.Module?.Types?.FirstOrDefault(x => x.Name == outer.Name) : null;
 
         return item is not IMemberDefinition definition && Resolving(item) is var ret
             ? item switch

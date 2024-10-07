@@ -2,7 +2,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
         <NoTests>true</NoTests>
-        <FileVersion>2.0.1</FileVersion>
+        <FileVersion>2.0.2</FileVersion>
         <CopyrightSince>2022</CopyrightSince>
         <NoWarn>$(NoWarn);419;1574;SCA0006</NoWarn>
         <TargetFramework>netstandard2.0</TargetFramework>
