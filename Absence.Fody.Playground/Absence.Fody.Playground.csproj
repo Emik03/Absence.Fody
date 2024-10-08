@@ -4,5 +4,14 @@
         <LangVersion>preview</LangVersion>
         <TargetFramework>netstandard2.0</TargetFramework>
         <RepositoryUrl>https://github.com/Emik03/Absence.Fody</RepositoryUrl>
+        <WeaverConfiguration>
+            <Weavers>
+                <Absence/>
+            </Weavers>
+        </WeaverConfiguration>
     </PropertyGroup>
+    <ItemGroup>
+        <PackageReference Include="Fody" Version="6.8.2" PrivateAssets="all"/>
+        <WeaverFiles Include="$(MSBuildProjectDirectory)/../artifacts/bin/Absence.Fody/release/Absence.Fody.dll"/>
+    </ItemGroup>
 </Project>

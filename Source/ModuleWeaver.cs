@@ -14,7 +14,7 @@ public sealed class ModuleWeaver : BaseModuleWeaver
     {
         Regex? ToRegex(ReadOnlyMemory<char> x)
         {
-            if (!Go(() => new Regex(x.Trim().ToString().OrEmpty()), out var e, out var ok))
+            if (!Go(() => new Regex($"{x.Trim()}"), out var e, out var ok))
                 return ok;
 
             WriteError($"Cannot parse regex (/{x}/) due to: {e}");

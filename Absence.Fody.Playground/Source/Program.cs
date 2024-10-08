@@ -1,7 +1,10 @@
 ﻿// SPDX-License-Identifier: MPL-2.0
-#pragma warning disable 1591, RCS1102 // ReSharper disable once CheckNamespace
-namespace Absence.Fody.Playground;
+// ReSharper disable once RedundantUsingDirective.Global
+using UnusedAttribute = Absence.Fody.Playground.UnusedAttribute;
+using System; // ReSharper disable once CheckNamespace
 
+namespace Absence.Fody.Playground;
+#pragma warning disable 1591, RCS1102
 using JetBrains.Annotations;
 
 public class Good1 // ReSharper disable ClassNeverInstantiated.Local UnusedMember.Local UnusedType.Local
@@ -110,3 +113,7 @@ class Bad14
         static void Bad26() { }
     }
 }
+
+/// <summary>Specifies that null is disallowed as an input even if the corresponding type allows it.</summary>
+[AttributeUsage(AttributeTargets.Field | AttributeTargets.Parameter | AttributeTargets.Property)]
+sealed partial class UnusedAttribute : Attribute;

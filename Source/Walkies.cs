@@ -125,6 +125,7 @@ sealed class Walkies : IEqualityComparer<IMemberDefinition>,
         Add(x?.EntryPoint);
         x?.CustomAttributes.OrEmpty().Lazily(Add).Enumerate();
         x?.Types.OrEmpty().Where(IsPublic).Lazily(Add).Enumerate();
+        x?.Types.ManyOrEmpty(x => x?.Methods).Filter().Select(x => x.DebugInformation?.Method).Lazily(Add).Enumerate();
     }
 
     /// <inheritdoc cref="ICollection{T}.Add"/>
@@ -183,16 +184,19 @@ sealed class Walkies : IEqualityComparer<IMemberDefinition>,
                 if (next is null)
                     return;
 
-                var name = next.Name.OrEmpty();
+                if (except.Count is not 0)
+                {
+                    var name = next.Name.OrEmpty();
 
-                for (var i = next.DeclaringType; i is not null; i = i.DeclaringType)
-                    name = $"{i.Name}.{name}";
+                    for (var i = next.DeclaringType; i is not null; i = i.DeclaringType)
+                        name = $"{i.Name}.{name}";
 
-                if (next.DeclaringType is { DeclaringType.Namespace: var space })
-                    name = $"{space}.{name}";
+                    if (next.DeclaringType is { DeclaringType.Namespace: var space })
+                        name = $"{space}.{name}";
 
-                if (except.Any(x => x.IsMatch(name)))
-                    return;
+                    if (except.Any(x => x.IsMatch(name)))
+                        return;
+                }
 
                 if (!Contains(next))
                 {
@@ -377,6 +381,7 @@ sealed class Walkies : IEqualityComparer<IMemberDefinition>,
                     item = Resolve(next);
                     continue;
                 case MethodDefinition { MethodReturnType: { CustomAttributes: var attr, ReturnType: var next } } method:
+                    Add(method.DebugInformation?.Method);
                     attr.OrEmpty().Lazily(Add).Enumerate();
                     method.Parameters.OrEmpty().Lazily(Add).Enumerate();
                     method.Body?.Variables.OrEmpty().Lazily(Add).Enumerate();
