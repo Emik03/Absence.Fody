@@ -125,7 +125,6 @@ sealed class Walkies : IEqualityComparer<IMemberDefinition>,
         Add(x?.EntryPoint);
         x?.CustomAttributes.OrEmpty().Lazily(Add).Enumerate();
         x?.Types.OrEmpty().Where(IsPublic).Lazily(Add).Enumerate();
-        x?.Types.ManyOrEmpty(x => x?.Methods).Filter().Select(x => x.DebugInformation?.Method).Lazily(Add).Enumerate();
     }
 
     /// <inheritdoc cref="ICollection{T}.Add"/>
@@ -176,46 +175,56 @@ sealed class Walkies : IEqualityComparer<IMemberDefinition>,
     /// <param name="onTrim">The action to invoke on each trimmed item.</param>
     public void Trim(ModuleDefinition? item, ICollection<Regex> except, Action<IMemberDefinition> onTrim)
     {
-        void Trims<T>(ICollection<T?>? collection)
+        static IEnumerable<IList<ImportTarget?>?>? Targets(MethodDefinition x) =>
+            x.DebugInformation?.Scope?.Import
+               .FindPathToNull(x => x.Parent)
+               .Select(x => x.Targets);
+
+        void TrimAll<T>(ICollection<T?>? collection)
             where T : IMemberDefinition
         {
-            void Process(T? next)
+            void TrimNext(T? x)
             {
-                if (next is null)
-                    return;
-
-                if (except.Count is not 0)
+                if (IsIgnored(x)) { }
+                else if (!Contains(x))
                 {
-                    var name = next.Name.OrEmpty();
-
-                    for (var i = next.DeclaringType; i is not null; i = i.DeclaringType)
-                        name = $"{i.Name}.{name}";
-
-                    if (next.DeclaringType is { DeclaringType.Namespace: var space })
-                        name = $"{space}.{name}";
-
-                    if (except.Any(x => x.IsMatch(name)))
-                        return;
+                    onTrim(x);
+                    collection.Remove(x);
                 }
-
-                if (!Contains(next))
+                else if (x is TypeDefinition { Events: var e, Methods: var m, NestedTypes: var n, Properties: var p })
                 {
-                    onTrim(next);
-                    collection.Remove(next);
-                }
-                else if (next is TypeDefinition x)
-                {
-                    Trims(x.Events);
-                    Trims(x.Methods);
-                    Trims(x.Properties);
-                    Trims(x.NestedTypes);
+                    TrimAll(e);
+                    TrimAll(m);
+                    TrimAll(n);
+                    TrimAll(p);
                 }
             }
 
-            collection?.ToArray().Lazily(Process).Enumerate();
+            collection?.ToArray().Lazily(TrimNext).Enumerate();
         }
 
-        Trims(item?.Types);
+        bool HasTrimmed(ImportTarget? x) =>
+            x?.Type?.Module?.Assembly?.FullName == item.Assembly?.FullName &&
+            _used.OfType<TypeDefinition>().Any(y => x?.Type?.Name == y.Name && x.Type?.Namespace == y.Namespace);
+
+        bool IsIgnored([NotNullWhen(false)] IMemberDefinition? next)
+        {
+            if (next is null || except.Count is 0)
+                return false;
+
+            var name = next.Name.OrEmpty();
+
+            for (var i = next.DeclaringType; i is not null; i = i.DeclaringType)
+                name = $"{i.Name}.{name}";
+
+            if (next.DeclaringType is { DeclaringType.Namespace: [_, ..] space })
+                name = $"{space}.{name}";
+
+            return except.Any(x => x.IsMatch(name));
+        }
+
+        TrimAll(item?.Types);
+        item?.GetTypes().ManyOrEmpty(x => x.Methods).ManyOrEmpty(Targets).Lazily(x => x.Retain(HasTrimmed)).Enumerate();
     }
 
     /// <inheritdoc />
@@ -381,7 +390,6 @@ sealed class Walkies : IEqualityComparer<IMemberDefinition>,
                     item = Resolve(next);
                     continue;
                 case MethodDefinition { MethodReturnType: { CustomAttributes: var attr, ReturnType: var next } } method:
-                    Add(method.DebugInformation?.Method);
                     attr.OrEmpty().Lazily(Add).Enumerate();
                     method.Parameters.OrEmpty().Lazily(Add).Enumerate();
                     method.Body?.Variables.OrEmpty().Lazily(Add).Enumerate();
