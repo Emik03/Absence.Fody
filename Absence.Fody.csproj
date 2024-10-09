@@ -7,7 +7,6 @@
         <NoWarn>$(NoWarn);419;1574;SCA0006</NoWarn>
         <TargetFramework>netstandard2.0</TargetFramework>
         <DisableDefaultDocumentation>true</DisableDefaultDocumentation>
-        <DefineConstants>$(DefineConstants);FORCE_SERILOG</DefineConstants>
         <RepositoryUrl>https://github.com/Emik03/Absence.Fody</RepositoryUrl>
         <Description>Removes unused private/internal types during compile-time.</Description>
         <PackageTags>Cecil Code Dead DeadCode Dependency Eliminate Elimination Events Fody IL ILWeaving Methods Minifier Minify Mono Nested Properties Purge Remove Shake Strip Tinifier Tinify TreeShake Tree Trim Types Unused Weaving</PackageTags>
