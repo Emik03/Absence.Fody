@@ -350,7 +350,8 @@ sealed class Walkies : IEqualityComparer<IMemberDefinition>,
 
     [Pure]
     static bool IsPublic([NotNullWhen(true)] MethodDefinition? item) =>
-        item is { IsAbstract: true } or { IsNewSlot: true } or { IsPublic: true } or { IsVirtual: true } or
+        item is { IsAbstract: true } or { IsFamily: true } or { IsFamilyAndAssembly: true } or
+            { IsFamilyOrAssembly: true } or { IsNewSlot: true } or { IsPublic: true } or { IsVirtual: true } or
             { Overrides.Count: > 0 } ||
         item is { IsConstructor: true } &&
         (item is { IsStatic: true } || item.DeclaringType?.Methods?.Count(x => x.IsConstructor) is 1) ||
@@ -366,7 +367,8 @@ sealed class Walkies : IEqualityComparer<IMemberDefinition>,
 
     [Pure]
     static bool IsPublic([NotNullWhen(true)] TypeDefinition? item) =>
-        item is { IsPublic: true } or { IsNestedPublic: true } ||
+        item is { IsPublic: true } or { IsNestedPublic: true } or { IsNestedFamily: true } or
+            { IsNestedFamilyAndAssembly: true } or { IsNestedFamilyOrAssembly: true } ||
         item is
         {
             FullName: "<Module>" or
