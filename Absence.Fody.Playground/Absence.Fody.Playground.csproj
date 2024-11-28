@@ -11,7 +11,7 @@
         </WeaverConfiguration>
     </PropertyGroup>
     <ItemGroup>
-        <PackageReference Include="Fody" Version="6.8.2" PrivateAssets="all"/>
+        <PackageReference Include="Fody" Version="6.9.1" PrivateAssets="all"/>
         <WeaverFiles Include="$(MSBuildProjectDirectory)/../artifacts/bin/Absence.Fody/release/Absence.Fody.dll"/>
     </ItemGroup>
 </Project>
