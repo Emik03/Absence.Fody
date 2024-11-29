@@ -114,6 +114,6 @@ class Bad14
     }
 }
 
-/// <summary>Specifies that null is disallowed as an input even if the corresponding type allows it.</summary>
+/// <summary>This attribute should be inlined.</summary>
 [AttributeUsage(AttributeTargets.Field | AttributeTargets.Parameter | AttributeTargets.Property)]
 sealed partial class UnusedAttribute : Attribute;

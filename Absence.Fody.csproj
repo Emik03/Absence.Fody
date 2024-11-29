@@ -16,11 +16,11 @@
         <TargetFramework>net9.0</TargetFramework>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Configuration)' == 'Release'">
-        <DoNotMerge>^(?:(?!CommunityToolkit)(?!System\.Memory).)+$</DoNotMerge>
-        <DefineConstants>$(DefineConstants);NO_SYSTEM_RUNTIME_INTEROPSERVICES_MEMORYMARSHAL</DefineConstants>
+        <DefineConstants>$(DefineConstants);NO_SYSTEM_MEMORY</DefineConstants>
     </PropertyGroup>
     <ItemGroup>
         <None Remove="Absence.Fody.Playground/**" />
         <Compile Remove="Absence.Fody.Playground/**" />
+        <Compile Remove="$(Morsels)/Compile/Source/References/System/Runtime/CompilerServices/DefaultInterpolatedStringHandler.cs" />
     </ItemGroup>
 </Project>
