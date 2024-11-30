@@ -12,9 +12,9 @@ public sealed class ModuleWeaver : BaseModuleWeaver
     /// <inheritdoc />
     public override void Execute()
     {
-        Regex? ToRegex(ReadOnlyMemory<char> x)
+        Regex? ToRegex(string x)
         {
-            if (!Go(() => new Regex($"{x.Trim()}"), out var e, out var ok))
+            if (!Go(() => new Regex(x), out var e, out var ok))
                 return ok;
 
             WriteError($"Cannot parse regex (/{x}/) due to: {e}");
@@ -23,7 +23,7 @@ public sealed class ModuleWeaver : BaseModuleWeaver
 
         var list = Config
            .Attributes("Except")
-           .SelectMany(x => x.Value.SplitWhitespace())
+           .SelectMany(x => x.Value.Split())
            .Select(ToRegex)
            .Filter()
            .ToIList();
