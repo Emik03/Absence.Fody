@@ -93,7 +93,11 @@ class Good8
 {
     public class Good9
     {
-        public static void Good10() => Good15<int>();
+        public static void Good10()
+        {
+            Good15<int>();
+            _ = new Good16();
+        }
 
         [UsedImplicitly]
         static void Good11() { }
@@ -125,6 +129,20 @@ class Good8
     static void Good15<[UsedImplicitly] T>() { }
 
     static void Bad13<[UsedImplicitly] T>() { }
+
+    sealed class Good16
+    {
+        internal static List<KeyValuePair<string, Good17>> s_field = [];
+
+        [Good18.Good19]
+        internal struct Good17
+        {
+            sealed class Good18 : Attribute
+            {
+                internal sealed class Good19 : Attribute;
+            }
+        }
+    }
 }
 
 class Bad14
@@ -190,7 +208,11 @@ class Good8
 {
     public class Good9
     {
-        public static void Good10() => Good15<int>();
+        public static void Good10()
+        {
+            Good15<int>();
+            _ = new Good16();
+        }
 
         [UsedImplicitly]
         static void Good11() { }
@@ -206,6 +228,20 @@ class Good8
     }
 
     static void Good15<[UsedImplicitly] T>() { }
+
+    sealed class Good16
+    {
+        internal static List<KeyValuePair<string, Good17>> s_field = [];
+
+        [Good18.Good19]
+        internal struct Good17
+        {
+            sealed class Good18 : Attribute
+            {
+                internal sealed class Good19 : Attribute;
+            }
+        }
+    }
 }
 ```
 

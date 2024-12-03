@@ -1,11 +1,11 @@
 ﻿// SPDX-License-Identifier: MPL-2.0
 // ReSharper disable once RedundantUsingDirective.Global
-using UnusedAttribute = Absence.Fody.Playground.UnusedAttribute;
-using System; // ReSharper disable once CheckNamespace
-
-namespace Absence.Fody.Playground;
-#pragma warning disable 1591, RCS1102
+using System;
+using System.Collections.Generic;
 using JetBrains.Annotations;
+using UnusedAttribute = Absence.Fody.Playground.UnusedAttribute; // ReSharper disable once CheckNamespace
+#pragma warning disable 1591, RCS1102
+namespace Absence.Fody.Playground;
 
 public class Good1 // ReSharper disable ClassNeverInstantiated.Local UnusedMember.Local UnusedType.Local
 {
@@ -46,7 +46,11 @@ class Good8
 {
     public class Good9
     {
-        public static void Good10() => Good15<int>();
+        public static void Good10()
+        {
+            Good15<int>();
+            _ = new Good16();
+        }
 
         [UsedImplicitly]
         static void Good11() { }
@@ -78,6 +82,20 @@ class Good8
     static void Good15<[UsedImplicitly] T>() { }
 
     static void Bad13<[UsedImplicitly] T>() { }
+
+    sealed class Good16
+    {
+        internal static List<KeyValuePair<string, Good17>> s_field = [];
+
+        [Good18.Good19]
+        internal struct Good17
+        {
+            sealed class Good18 : Attribute
+            {
+                internal sealed class Good19 : Attribute;
+            }
+        }
+    }
 }
 
 class Bad14

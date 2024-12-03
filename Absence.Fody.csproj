@@ -1,7 +1,7 @@
 <!-- SPDX-License-Identifier: MPL-2.0 -->
 <Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
-        <FileVersion>2.0.9</FileVersion>
+        <FileVersion>2.0.10</FileVersion>
         <NoWarn>$(NoWarn);419;1574</NoWarn>
         <CopyrightSince>2022</CopyrightSince>
         <TargetFramework>netstandard2.0</TargetFramework>

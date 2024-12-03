@@ -102,6 +102,7 @@ sealed class Walkies : IEqualityComparer<IMemberDefinition>,
     {
         item?.Constraints.OrEmpty().Lazily(Add).Enumerate();
         item?.CustomAttributes.OrEmpty().Lazily(Add).Enumerate();
+        item?.GenericParameters.OrEmpty().Lazily(Add).Enumerate();
     }
 
     /// <inheritdoc cref="ICollection{T}.Add"/>
@@ -386,12 +387,15 @@ sealed class Walkies : IEqualityComparer<IMemberDefinition>,
             switch (item)
             {
                 case EventDefinition { EventType: var next }:
+                    AddGenericArguments(next);
                     item = Resolve(next);
                     continue;
                 case FieldDefinition { FieldType: var next }:
+                    AddGenericArguments(next);
                     item = Resolve(next);
                     continue;
                 case MethodDefinition { MethodReturnType: { CustomAttributes: var attr, ReturnType: var next } } method:
+                    AddGenericArguments(next);
                     attr.OrEmpty().Lazily(Add).Enumerate();
                     method.Parameters.OrEmpty().Lazily(Add).Enumerate();
                     method.Body?.Variables.OrEmpty().Lazily(Add).Enumerate();
@@ -401,9 +405,11 @@ sealed class Walkies : IEqualityComparer<IMemberDefinition>,
                     item = Resolve(next);
                     continue;
                 case PropertyDefinition { PropertyType: var next }:
+                    AddGenericArguments(next);
                     item = Resolve(next);
                     continue;
                 case TypeDefinition { BaseType: var next } type:
+                    AddGenericArguments(next);
                     type.Fields.OrEmpty().Lazily(Add).Enumerate();
                     type.Interfaces.OrEmpty().Lazily(Add).Enumerate();
                     type.GenericParameters.OrEmpty().Lazily(Add).Enumerate();
@@ -416,6 +422,17 @@ sealed class Walkies : IEqualityComparer<IMemberDefinition>,
                 default: return;
             }
     }
+
+    void AddGenericArguments(MemberReference member) =>
+        (member switch
+        {
+            GenericInstanceType git => git.GenericArguments,
+            GenericInstanceMethod gim => gim.GenericArguments,
+            _ => [],
+        }).Lazily(AddGenericArguments)
+       .Select(Resolve)
+       .Lazily(Add)
+       .Enumerate();
 
     [MustUseReturnValue]
     IMemberDefinition? Resolve(MemberReference? item)
