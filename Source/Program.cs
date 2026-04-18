@@ -3,15 +3,14 @@
 static void OnTrim(IMemberDefinition x) => Console.WriteLine($"Begone, {Join(x)}!");
 
 static string Join(IMemberDefinition x) =>
-   x.FindPathToNull(x => x.DeclaringType).Select(x => x.Name).Reverse().Conjoin('.');
+    x.FindPathToNull(x => x.DeclaringType).Select(x => x.Name).Reverse().Conjoin('.');
 
 static void Dump(Walkies tree)
-#if DEBUG
-   =>
-      tree.Select(Join).Lazily(x => Console.WriteLine($"Preserving {x}.")).Enumerate();
-#else
-{ }
-#endif
+{
+    if (Environment.GetEnvironmentVariable("ABSENCE_FODY_LOG_PRESERVATIONS") is not null and not "")
+        tree.Select(Join).Lazily(x => Console.WriteLine($"Preserving {x}.")).Enumerate();
+}
+
 var readLine = Console.ReadLine;
 
 args

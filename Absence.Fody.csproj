@@ -1,24 +1,23 @@
 <!-- SPDX-License-Identifier: MPL-2.0 -->
 <Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
-        <FileVersion>2.0.10</FileVersion>
+        <OutputType>Exe</OutputType>
+        <FileVersion>2.0.11</FileVersion>
         <NoWarn>$(NoWarn);419;1574</NoWarn>
         <CopyrightSince>2022</CopyrightSince>
-        <TargetFramework>netstandard2.0</TargetFramework>
+        <TargetFramework>net9.0</TargetFramework>
         <RepositoryUrl>https://github.com/Emik03/Absence.Fody</RepositoryUrl>
         <Description>Removes unused private/internal types during compile-time.</Description>
         <PackageTags>Cecil Code Dead DeadCode Dependency Eliminate Elimination Events Fody IL ILWeaving Methods Minifier Minify Mono Nested Properties Purge Remove Shake Strip Tinifier Tinify TreeShake Tree Trim Types Unused Weaving</PackageTags>
     </PropertyGroup>
-    <PropertyGroup Condition="'$(Configuration)' == 'Debug'">
-        <OutputType>Exe</OutputType>
-        <TargetFramework>net9.0</TargetFramework>
-    </PropertyGroup>
     <PropertyGroup Condition="'$(Configuration)' == 'Release'">
+        <OutputType>Library</OutputType>
+        <TargetFramework>netstandard2.0</TargetFramework>
         <DefineConstants>$(DefineConstants);NO_SYSTEM_MEMORY</DefineConstants>
     </PropertyGroup>
     <ItemGroup>
-        <None Remove="Absence.Fody.Playground/**" />
-        <Compile Remove="Absence.Fody.Playground/**" />
-        <Compile Remove="$(Morsels)/Compile/Source/References/System/Runtime/CompilerServices/DefaultInterpolatedStringHandler.cs" />
+        <None Remove="Absence.Fody.Playground/**"/>
+        <Compile Remove="Absence.Fody.Playground/**"/>
+        <Compile Include="$(Morsels)/Compile/**/*.cs"/>
     </ItemGroup>
 </Project>

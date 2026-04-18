@@ -290,12 +290,12 @@ sealed class Walkies : IEqualityComparer<IMemberDefinition>,
     [Pure]
     int IEqualityComparer<IMemberDefinition>.GetHashCode(IMemberDefinition? obj)
     {
-        int hash = Prime();
+        int hash = Primes.Get();
 
         for (; obj is not null; obj = obj.DeclaringType)
         {
-            hash ^= unchecked(obj.GetType().GetHashCode() * Prime());
-            hash ^= unchecked(StringComparer.Ordinal.GetHashCode(obj.Name.OrEmpty()) * Prime());
+            hash ^= unchecked(obj.GetType().GetHashCode() * Primes.Get());
+            hash ^= unchecked(StringComparer.Ordinal.GetHashCode(obj.Name.OrEmpty()) * Primes.Get());
         }
 
         return hash;
