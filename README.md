@@ -1,4 +1,4 @@
-[<img src="Images/icon.svg" width=25% height=25%>](https://raw.githubusercontent.com/Emik03/Emik.SourceGenerators.Choices/refs/heads/main/Images/icon.svg)
+[<img src="Images/icon.svg" width=25% height=25%>](https://raw.githubusercontent.com/Emik03/Absence.Fody/refs/heads/main/Images/icon.svg)
 
 # Absence.Fody
 
